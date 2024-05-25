@@ -57,9 +57,13 @@ class SyntaxAnalyzer:
 
     def N(self):
         if self.index < len(self.input_string):
-            if self.input_string[self.index].isdigit():
+            if self.input_string[self.index] == '0':
+                self.match('0')
+            elif self.input_string[self.index].isdigit() and self.input_string[self.index] != '0':
                 self.match_digit()
                 self.D()
+        else:
+            raise Exception()
 
     def D(self):
         if self.index < len(self.input_string):
@@ -75,58 +79,58 @@ class SyntaxAnalyzer:
 
 
 def test_syntax_analyzer(inputs):
+    i = 1
     for input_string in inputs:
         analyzer = SyntaxAnalyzer(input_string)
-        print("Teste:", input_string)
+        print(f"Teste {i}:", input_string)
         analyzer.analyze()
         print("\n")
+        i+=1
 
 
-correct_inputs = [
-    "1+2*3",
-    "(1+2)*3",
-    "1+(2*3)",
-    "1*2+3",
-    "1+(2+3)*4",
-    "1+2*3/4",
-    "1+(2*3)/4",
-    "1*2+(3/4)",
-    "1*2*3*4",
-    "1-(2+3)*4",
-    "1+(2*3)*4",
-    "1+(2*3/4)",
-    "1+2*3+4",
-    "1*2+3*4",
-    "(1*2)+3*4",
-    "1+2*(3*4)",
-    "1*2*3/4",
-    "1+2*(3+4)",
-    "(1+2)*(3+4)",
-    "1*2*3+4",
+correct_inputs = ['10+21*30',
+'7-(8/4)+10',
+'(15*2)-30',
+'5*(6+2)/8',
+'20/4*5-2',
+'9+(10*3)-8',
+'18-(9*2)',
+'14/2+16',
+'25-10+3*7',
+'(12+4)*(3-1)',
+'45/(5+5)-2',
+'3*(20/4)',
+'7+(8-2)*5',
+'30/(5*2)',
+'10*(4+3)',
+'(9-6)*(8+3)',
+'50-20*2',
+'(5+5)*(10/2)',
+'24/(8-2)',
+'100/(25*2)'
 ]
 
-incorrect_inputs = [
-    "1+2*",
-    "(1+2*3",
-    "1+(2*3",
-    "1*2+",
-    "1+(2+3*4",
-    "1+2*3/",
-    "1+(2*3)/",
-    "1*2+3/",
-    "1*2*3*",
-    "1-(2+3)*",
-    "1+(2*3*4",
-    "1+(2*3/4",
-    "1+2*3+",
-    "1*2+3*",
-    "(1*2)+3*",
-    "1+2*(3*4",
-    "1*2*3/",
-    "1+2*(3+4",
-    "(1+2)*(3+4",
-    "1*2*3+",
-    "1+"
+incorrect_inputs = ['10+*21',
+'7-(8/)+10',
+'(15*)-30',
+'5*(6+2/8',
+'20//4*5-2',
+'9+(10*3)-',
+'18-(*9*2)',
+'014/2+16',
+'25-10+*3*7',
+'(12+4)*(3-)1)',
+'45/(5+)-2',
+'3*(20/',
+'7+(8-2)*',
+'30/(5*',
+'10*(4+)3',
+'(9-6)*(8+3',
+'50-20*',
+'(5+5)*(10/',
+'24/(8-2)+)',
+'100/(25*2))'
 ]
 
-test_syntax_analyzer(correct_inputs)
+
+test_syntax_analyzer(incorrect_inputs)
